@@ -1,23 +1,12 @@
 <template>
   <fieldset class="map-options">
-    <legend>OneMap</legend>
-    <label>Filter Options</label><br/><hr>
-    <label><input v-model="type" type="radio" id="active" name="type" value="active" /> COVID-19 Cases</label><br />
-    <label><input v-model="type" type="radio" id="confirmed" name="type" value="confirmed" /> Crime</label><br />
-    <label><input v-model="type" type="radio" id="recovered" name="type" value="recovered" /> Hospitals</label><br />
-    <label><input v-model="type" type="radio" id="deaths" name="type" value="deaths" /> Schools</label>
- <table>
-    <thead>
-      <tr><th>title</th></tr>
-      </thead>
-    <tbody>
-      <tr v-for="feature in features" v-bind:key="feature">
-       <td>
-         {{feature.properties.date}}
-         </td>
-        </tr>
-    </tbody>
-    </table>
+    <legend><i class="fas fa-eye"></i> YYC Watchtower</legend>
+    <label>With Watch Tower, preview crimes that have occurred in Calgary from 2019 until today all in real-time and gain a better understanding of your community!</label><br/><br/>
+    <br/>
+    <label>YYC Watchtower is powered by Google Cloud.</label><br/><br/><br/>
+    <label class="boast"><i class="fas fa-spinner fa-pulse"></i> Loading 46,428 cases</label><br/><br/>
+    <label class="date"><i class="far fa-clock"></i> Last updated: {{ timestamp }}</label>
+
   </fieldset>
 
 </template>
@@ -27,11 +16,21 @@
 export default {
   name: 'MapOptions',
   data: () => ({
-    type: 'active'
+    type: 'active',
+    timestamp: ""
   }),
-  watch: {
-
-  }
+   created() {
+                setInterval(this.getNow, 1000);
+            },
+            methods: {
+                getNow: function() {
+                    const today = new Date();
+                    const date = (today.getMonth()+1)+'-'+today.getDate()+'-'+today.getFullYear();
+                    const dateTime = date;
+                    this.timestamp = dateTime;
+                }
+            }
+  
 }
 </script>
 
@@ -41,24 +40,33 @@ export default {
   border: none;
   font-family: 'Roboto', sans-serif;
   position: fixed;
-  width: 180px;
+  width: 240px;
   top: 120px;
   left: 10px;
   padding: 20px;
-  background: white;
+  background: rgb(255,255,255);
   border-radius: 5px;
-  font-size: large;
+  font-size: 18px;
+  border-radius: 10px;
+}
+hr{
+  border: 1px solid #333;
+}
+.date{
+  font-size: 15px;
 }
 legend{
-  font-size: 18px;
+  font-size: 23px;
+  width: 100%;
+  text-align: center;
 }
 input {
   margin-bottom: 10px;
 }
 .map-options legend {
-  background: white;
+  background: rgb(255,255,255);
   font-weight: bold;
-  padding: 5px 10px;
+  padding: 10px 2px;
   border-radius: 10px;
 }
 </style>
